@@ -37,7 +37,7 @@ function [t, out] = mySquareV1(t, f0, d_c, bds=[-1,1], pds=0, cent=false);
     out(n_rad > pulse_end_rad) = bds(1);
     out(n_rad <= pulse_end_rad) = bds(2);
 
-    t = t*1e3;
+    t = t*1e3; # skaler til ms
  
 end;
 
@@ -97,7 +97,7 @@ function [t, out] = mySquareV3(f0, d_c, spp, bds=[-1,1], pds=5, sh=0)
     out(t_mod <= pulse_end_time) = bds(2);
     out(t_mod > pulse_end_time) = bds(1);
 
-    t = t*1e3;
+    t = t*1e3; 
 end;
 
 % a) 
@@ -211,7 +211,7 @@ function [t, out] = bitWaveGen(bits, T, spp, sh=0)
     end;
     out = out((round(sh_num/dt)+1):end);
 
-    t = t*1e3;
+    t = t*1e3; 
 end;
 
 bits = [1,0,1,0];
