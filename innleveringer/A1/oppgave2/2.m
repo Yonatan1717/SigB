@@ -50,6 +50,7 @@ end;
 
 ttl = sprintf("Sinus bølge varierende dt: A = %d [V], f = %d [kHz]", A, f/1e3); 
 title(ttl);
+xlabel("time [ms]"); ylabel("Amplitude [V]");
 legend();
 
 hold off;
@@ -66,6 +67,6 @@ for i = 1:length(dts)
     plot(t_i*1e3, s_i, colors(i));
 
     xlabel("time [ms]"); ylabel("Amplitude [V]");
-    ttl_i = sprintf("Sinus bølge (skalert): A = %d [V], f = %d [kHz], dt = %g [us], fs = %g [kHz], spp = %d, dp = %d", A, f/1e3, dt_i*1e6, fs_i/1e3, spp_i, length(t_i));
+    ttl_i = sprintf("Sinus bølge: dt = %g [us], fs = %g [kHz], spp = %d, dp = %d", dt_i*1e6, fs_i/1e3, spp_i, length(t_i));
     title(ttl_i);
 end;
