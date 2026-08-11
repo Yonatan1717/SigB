@@ -107,23 +107,25 @@ figure(1);
 subplot(2,1,1);
 hold on;
 t = t*1e3; # skaler til ms
-plot(t,out_m, "b", "DisplayName", sprintf("mySquareV1, d_c = %d %%", d_c));
 plot(t,out_m2, "r", "DisplayName", sprintf("mySquareV1, d_c = %d %%, sentrert", d_c2));
+plot(t,out_m, "b", "DisplayName", sprintf("mySquareV1, d_c = %d %%", d_c));
 ylim([-1.2, 1.2]);
 xlabel('Time [ms]');
 ylabel('Amplitude [V]');
 title(sprintf("mySquareV1"));
 legend();
+grid()
 
 subplot(2,1,2);
 hold on;
-plot(t, out, "b", "DisplayName", sprintf("d_c = %d %%", d_c));
 plot(t, out2, "r", "DisplayName", sprintf("d_c = %d %%, sentrert", d_c2));
+plot(t, out, "b", "DisplayName", sprintf("d_c = %d %%", d_c));
 ylim([-1.2, 1.2]);
 xlabel('Time [ms]');
 ylabel('Amplitude [V]');
 title(sprintf("square funksjon i Octave"));
 legend();
+grid()
 
 
 % b)
@@ -185,5 +187,6 @@ disp(t(end));
 xticks(0:0.5:t(end));
 ylim([-0.2, 1.2]);
 legend();
+grid()
 
 
