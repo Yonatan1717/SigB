@@ -11,7 +11,9 @@ function [t, out] = mySquareV1(t, f0, d_c, bds=[-1,1], pds=0, cent=false);
         f0: fundemental frekvens
         d_c: duty cycle 
         bds: bounds aks grenser (hva høy og lav er i verdi) -> bds(1) = lav verdi, bds(2) = høy verdi.  
-        pds: antall perioder man ønsker, hvis pds=0 så er t_ut = t_in, ellers er t_in tilpasset til pds.
+        pds: antall perioder man ønsker, hvis pds=0 så er t_ut = t_in, ellers er t_in tilpasset til pds. 
+        antall perioder må være <= antall peridoder det er i t
+
         cent: få en sentrerrt positiv puls omkring origo (alså tidskifte med halv pulsperiode, t+t1 hvor t1 = (T*d_c/100)/2)
 
         t: tidsavektor om pds=0 t_ut = t_in eller så er den tilpaset skalert til ms, 
