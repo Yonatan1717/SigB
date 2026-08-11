@@ -37,15 +37,16 @@ function [a_0, y, t] = findA0(func, T, dp)
     t = 0:dt:(T-dt);
     y = func(t);
 
-    a_0 = round((sum(y)/(length(t)))*1e3)/1e3;
+    a_0 = mean(y);
 end;
 
-function [a_l, b_l, val_l, freq_l, dc, m] = findAandBs(func, T, num_coffs, dp)
-    %a = integral(x(t)cos(w_0*n*t), 0, T)
-    %b = integral(x(t)sin(w_0*n*t), 0, T)
-    % x(t) = dc + a_n*cos(w_0*n*t)
+function [amp_l, phi_l, freq_l, a_l, b_l, amp_min_max, phi_min_max] = findAandBs(func, T, num_coffs, dp)
+    % a_n = (2/T) * integral(x(t)cos(w_0*n*t), 0, T)
+    % b_n = (2/T) * integral(x(t)sin(w_0*n*t), 0, T)
+    % x(t) = dc + ( a_n*cos(w_0*n*t) + b_n*sin(w_0*n*t) ) -> amp*sin(w_0*n*t + phi), 
+    % hvor, a_n = sin(phi), b_b = amp*cos(phi) ->  amp = sqrt(a_n^2+b_n^2) og phi = arctan(a_n/b_n)
 
-    n = 0:num_coffs;
+    n = 1:num_coffs;
     w_0 = (2*pi)/T;
 
     dt = T/dp;
@@ -54,23 +55,70 @@ function [a_l, b_l, val_l, freq_l, dc, m] = findAandBs(func, T, num_coffs, dp)
     a_l = [];
     b_l = [];
 
-    val_l = [];
     freq_l = [];
+
+    amp_l = [];
+    phi_l = [];
     for i=n;
         y1 = func(t).*cos(i*w_0*t);
         y2 = func(t).*sin(i*w_0*t);
 
-        coff_a =  sum(y1)/(length(t));
-        coff_b =  sum(y2)/(length(t));
+        coff_a =  2*mean(y1);
+        coff_b =  2*mean(y2);
 
         a_l = [a_l, coff_a];
         b_l = [b_l, coff_b];
-        freq_l = [freq_l, (w_0*i)/(2*pi)];
+        freq_l = [freq_l, i/T];
     end;
 
-    dc =  a_l(1)
-    m = max([a_l, b_l])
+    amp_l = sqrt(a_l.^2 + b_l.^2);
+    phi_l = atan2(-b_l,a_l);
+    lim = max(amp_l)*1e-6;
+    phi_l(amp_l < lim ) = NaN;
 
+    amp_min_max = [min(amp_l), max(amp_l)];
+    phi_min_max = [min(phi_l), max(phi_l)];
+end;
+
+function [mag_l, phi_l, freq_l, c_l, mag_min_max, phi_min_max] = findCs(func, T, num_coffs, dp)
+    % c_n = (1/T) * integral(x(t)*exp(-j*w*n*t), 0, T)
+    % x(t) = dc + ( c_n*exp(j*w*t)) ) -> n = [-l, l] 
+
+    l = round(num_coffs/2);
+    n = [-l:l];
+    w_0 = (2*pi)/T;
+
+    dt = T/dp;
+    t = 0:dt:(T-dt);
+    
+    c_l = [];
+
+    freq_l = [];
+
+    mag_l = [];
+    phi_l = [];
+    for i=n;
+        y1 = func(t).*exp(-j*w_0*i*t);
+
+        coff_c =  mean(y1);
+
+        c_l = [c_l, coff_c];
+        freq_l = [freq_l, i/T];
+    end;
+
+    mag_l = abs(c_l);
+    phi_l = angle(c_l);
+
+    lim = max(mag_l)*1e-6;
+
+    phi_l(mag_l < lim ) = 0;
+
+    mag_min_max = [min(mag_l), max(mag_l)];
+    phi_min_max = [min(phi_l), max(phi_l)];
+end;
+
+function deg = radToDeg(rad)
+    deg = rad*(180/pi);
 end;
 
 function out =  myFunc(t)
@@ -80,17 +128,50 @@ function out =  myFunc(t)
     tau = T/4;
     d_c = round((tau/T)*100);
     out = mySquareV1(t,f0, d_c, [0, A], true);
-    out = sin(t*f0*2*pi);
+    %out = sin(t*f0*2*pi) + sin(t*f0*2*pi + pi/4);
 end;
+
 
 T = 8e-3;
 
-[a_l, b_l, val_l, freq_l, dc, m] = findAandBs(@myFunc, T, 20, 125);
-stem(freq_l, b_l+a_l)
-ylim([-.2,m+.2])
+dp = 140;
+freqs = 20;
 
+dc = findA0(@myFunc, T, dp);
+[amp_l, phi_l, freq_l, a_l, b_l, amp_mm, phi_mm] = findAandBs(@myFunc, T, freqs, dp);
+figure(1);
+subplot(2,1,1);
+stem(freq_l, amp_l, "r");
+ylim([amp_mm(1)-.2, amp_mm(2)+.2]);
+ylabel("Amplitude [V]"); xlabel("frekvnes [Hz]")
+title("Amplitude")
+xticks(0:250:freq_l(end));
 
+subplot(2,1,2)
+marg = radToDeg(.2);
+phi_mm = radToDeg(phi_mm);
+stem(freq_l, radToDeg(phi_l), "b");
+ylim([phi_mm(1)-marg, phi_mm(2)+marg]);
+ylabel("Faseskift [deg]"); xlabel("frekvnes [Hz]")
+title("fase")
+xticks(0:250:freq_l(end));
 
+figure(2);
+[mag_l, phi_l, freq_l, c_l, mag_mm, phi_mm] = findCs(@myFunc, T, freqs, dp);
 
+subplot(2,1,1)
+stem(freq_l, mag_l, "r");
 
+ylim([mag_mm(1)-.2, mag_mm(2)+.2]);
+xticks(freq_l(1):250:freq_l(end));
+title("Magnitude")
+ylabel("Magnitude"); xlabel("frekvnes [Hz]")
 
+subplot(2,1,2)
+phi_mm = radToDeg(phi_mm);
+stem(freq_l, radToDeg(phi_l), "b");
+
+ylim([phi_mm(1)-marg, phi_mm(2)+marg]);
+xticks(freq_l(1):250:freq_l(end));
+title("Fase")
+ylabel("Faseskift [deg]"); xlabel("frekvnes [Hz]")
