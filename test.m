@@ -1,6 +1,5 @@
 
-a = 3;
-
+3;
 
 function out = mySquareV1(t, f0, d_c, bds=[-1,1], cent=false)
     #{ 
@@ -43,8 +42,8 @@ end;
 function [amp_l, phi_l, freq_l, a_l, b_l, amp_min_max, phi_min_max] = findAandBs(func, T, num_coffs, dp)
     % a_n = (2/T) * integral(x(t)cos(w_0*n*t), 0, T)
     % b_n = (2/T) * integral(x(t)sin(w_0*n*t), 0, T)
-    % x(t) = dc + ( a_n*cos(w_0*n*t) + b_n*sin(w_0*n*t) ) -> amp*sin(w_0*n*t + phi), 
-    % hvor, a_n = sin(phi), b_b = amp*cos(phi) ->  amp = sqrt(a_n^2+b_n^2) og phi = arctan(a_n/b_n)
+    % x(t) = dc + ( a_n*cos(w_0*n*t) + b_n*sin(w_0*n*t) ) -> amp*cos(w_0*n*t + phi), 
+    % hvor, a_n = amp*cos(phi), b_n = -amp*sin(phi) ->  amp = sqrt(a_n^2+b_n^2) og phi = arctan(-b_n/a_n)
 
     n = 1:num_coffs;
     w_0 = (2*pi)/T;
@@ -60,11 +59,11 @@ function [amp_l, phi_l, freq_l, a_l, b_l, amp_min_max, phi_min_max] = findAandBs
     amp_l = [];
     phi_l = [];
     for i=n;
-        y1 = func(t).*cos(i*w_0*t);
-        y2 = func(t).*sin(i*w_0*t);
+        y_a = func(t).*cos(i*w_0*t);
+        y_b = func(t).*sin(i*w_0*t);
 
-        coff_a =  2*mean(y1);
-        coff_b =  2*mean(y2);
+        coff_a =  2*mean(y_a);
+        coff_b =  2*mean(y_b);
 
         a_l = [a_l, coff_a];
         b_l = [b_l, coff_b];
@@ -72,7 +71,8 @@ function [amp_l, phi_l, freq_l, a_l, b_l, amp_min_max, phi_min_max] = findAandBs
     end;
 
     amp_l = sqrt(a_l.^2 + b_l.^2);
-    phi_l = atan2(-b_l,a_l);
+    phi_l = atan2(-b_l, a_l);
+
     lim = max(amp_l)*1e-6;
     phi_l(amp_l < lim ) = NaN;
 
@@ -82,9 +82,9 @@ end;
 
 function [mag_l, phi_l, freq_l, c_l, mag_min_max, phi_min_max] = findCs(func, T, num_coffs, dp)
     % c_n = (1/T) * integral(x(t)*exp(-j*w*n*t), 0, T)
-    % x(t) = dc + ( c_n*exp(j*w*t)) ) -> n = [-l, l] 
+    % x(t) = dc + c_n*exp(j*w*t) -> n = [-l, l] 
 
-    l = round(num_coffs/2);
+    l = num_coffs;
     n = [-l:l];
     w_0 = (2*pi)/T;
 
@@ -111,7 +111,7 @@ function [mag_l, phi_l, freq_l, c_l, mag_min_max, phi_min_max] = findCs(func, T,
 
     lim = max(mag_l)*1e-6;
 
-    phi_l(mag_l < lim ) = 0;
+    phi_l(mag_l < lim ) = NaN;
 
     mag_min_max = [min(mag_l), max(mag_l)];
     phi_min_max = [min(phi_l), max(phi_l)];
@@ -141,11 +141,12 @@ dc = findA0(@myFunc, T, dp);
 [amp_l, phi_l, freq_l, a_l, b_l, amp_mm, phi_mm] = findAandBs(@myFunc, T, freqs, dp);
 figure(1);
 subplot(2,1,1);
-stem(freq_l, amp_l, "r");
+stem([0, freq_l], [dc, amp_l], "r");
 ylim([amp_mm(1)-.2, amp_mm(2)+.2]);
 ylabel("Amplitude [V]"); xlabel("frekvnes [Hz]")
 title("Amplitude")
 xticks(0:250:freq_l(end));
+grid()
 
 subplot(2,1,2)
 marg = radToDeg(.2);
@@ -155,6 +156,7 @@ ylim([phi_mm(1)-marg, phi_mm(2)+marg]);
 ylabel("Faseskift [deg]"); xlabel("frekvnes [Hz]")
 title("fase")
 xticks(0:250:freq_l(end));
+grid()
 
 figure(2);
 [mag_l, phi_l, freq_l, c_l, mag_mm, phi_mm] = findCs(@myFunc, T, freqs, dp);
@@ -166,6 +168,7 @@ ylim([mag_mm(1)-.2, mag_mm(2)+.2]);
 xticks(freq_l(1):250:freq_l(end));
 title("Magnitude")
 ylabel("Magnitude"); xlabel("frekvnes [Hz]")
+grid()
 
 subplot(2,1,2)
 phi_mm = radToDeg(phi_mm);
@@ -175,3 +178,4 @@ ylim([phi_mm(1)-marg, phi_mm(2)+marg]);
 xticks(freq_l(1):250:freq_l(end));
 title("Fase")
 ylabel("Faseskift [deg]"); xlabel("frekvnes [Hz]")
+grid()
