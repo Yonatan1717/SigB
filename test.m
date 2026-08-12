@@ -30,7 +30,7 @@ function out = mySquareV1(t, f0, d_c, bds=[-1,1], cent=false)
  
 end;
 
-function [a_0, y, t] = findA0(func, T, dp)
+function [a_0, t, y] = findA0(func, T, dp)
 
     dt = T/dp;
     t = 0:dt:(T-dt);
@@ -74,7 +74,7 @@ function [amp_l, phi_l, freq_l, a_l, b_l, amp_min_max, phi_min_max] = findAandBs
     phi_l = atan2(-b_l, a_l);
 
     lim = max(amp_l)*1e-6;
-    phi_l(amp_l < lim ) = NaN;
+    phi_l(amp_l < lim ) = 0;
 
     amp_min_max = [min(amp_l), max(amp_l)];
     phi_min_max = [min(phi_l), max(phi_l)];
@@ -111,14 +111,14 @@ function [mag_l, phi_l, freq_l, c_l, mag_min_max, phi_min_max] = findCs(func, T,
 
     lim = max(mag_l)*1e-6;
 
-    phi_l(mag_l < lim ) = NaN;
+    phi_l(mag_l < lim ) = 0;
 
     mag_min_max = [min(mag_l), max(mag_l)];
     phi_min_max = [min(phi_l), max(phi_l)];
 end;
 
 function deg = radToDeg(rad)
-    deg = rad*(180/pi);
+    deg = rad.*(180/pi);
 end;
 
 function out =  myFunc(t)
@@ -131,41 +131,41 @@ function out =  myFunc(t)
     %out = sin(t*f0*2*pi) + sin(t*f0*2*pi + pi/4);
 end;
 
-
+A = 2;
 T = 8e-3;
 
 dp = 140;
-freqs = 20;
+nfreqs = 35;
 
-dc = findA0(@myFunc, T, dp);
-[amp_l, phi_l, freq_l, a_l, b_l, amp_mm, phi_mm] = findAandBs(@myFunc, T, freqs, dp);
+[dc, t, sq] = findA0(@myFunc, T, dp);
+figure(6);
+plot(t, sq);
+ylim([-.2, A+.2])
+[amp_l, phi_l1, freq_l1, a_l, b_l, amp_mm1, phi_mm1] = findAandBs(@myFunc, T, nfreqs, dp);
 figure(1);
 subplot(2,1,1);
-stem([0, freq_l], [dc, amp_l], "r");
-ylim([amp_mm(1)-.2, amp_mm(2)+.2]);
+stem([0, freq_l1], [dc, amp_l], "r");
+ylim([amp_mm1(1)-.2, amp_mm1(2)+.2]);
 ylabel("Amplitude [V]"); xlabel("frekvnes [Hz]")
 title("Amplitude")
-xticks(0:250:freq_l(end));
 grid()
 
 subplot(2,1,2)
 marg = radToDeg(.2);
-phi_mm = radToDeg(phi_mm);
-stem(freq_l, radToDeg(phi_l), "b");
-ylim([phi_mm(1)-marg, phi_mm(2)+marg]);
+phi_mm1 = radToDeg(phi_mm1);
+stem(freq_l1, radToDeg(phi_l1), "b");
+ylim([phi_mm1(1)-marg, phi_mm1(2)+marg]);
 ylabel("Faseskift [deg]"); xlabel("frekvnes [Hz]")
 title("fase")
-xticks(0:250:freq_l(end));
 grid()
 
 figure(2);
-[mag_l, phi_l, freq_l, c_l, mag_mm, phi_mm] = findCs(@myFunc, T, freqs, dp);
+[mag_l, phi_l, freq_l, c_l, mag_mm, phi_mm] = findCs(@myFunc, T, nfreqs, dp);
 
 subplot(2,1,1)
 stem(freq_l, mag_l, "r");
 
 ylim([mag_mm(1)-.2, mag_mm(2)+.2]);
-xticks(freq_l(1):250:freq_l(end));
 title("Magnitude")
 ylabel("Magnitude"); xlabel("frekvnes [Hz]")
 grid()
@@ -175,7 +175,58 @@ phi_mm = radToDeg(phi_mm);
 stem(freq_l, radToDeg(phi_l), "b");
 
 ylim([phi_mm(1)-marg, phi_mm(2)+marg]);
-xticks(freq_l(1):250:freq_l(end));
 title("Fase")
 ylabel("Faseskift [deg]"); xlabel("frekvnes [Hz]")
 grid()
+
+function [H, gain_l, phi_l, C] = HLowPass(f, f_cut, R)
+
+    C = 1/(f_cut*2*pi*R);
+    Z_c = 1./(j*2*pi*f*C);
+
+    H = 1 ./ (1 + j*2*pi*f*R*C);;
+
+    gain_l = abs(H);
+    phi_l = angle(H);
+end;
+
+R = 10e3;
+f_cut = 500;
+f = [0, freq_l1];
+
+[H, gain_l, phi_l, C] = HLowPass(f, f_cut, R);
+disp(C);
+
+figure(3);
+subplot(2,1,1);
+plot(f, gain_l);
+
+subplot(2,1,2);
+plot(f, phi_l);
+
+% bruk filterer på findAandBs
+filterd_amp_l = gain_l.*[dc, amp_l];
+filterd_phi_l = phi_l+ [0, phi_l1];
+figure(4);
+stem(f, filterd_amp_l);
+stem(f, filterd_amp_l);
+
+function [t, out]  = getFilterdTimeDomainFromFindAandBsOnePeriode(f,filterd_amp_l, phi_l, pds, dp)
+    % bruker x(t) = amp*cos(2*pi*f_n*t + phi) for å starte med
+    T = 1/f(2);
+    dt = (pds*T)/dp;
+
+    t = 0:dt:(pds*T-dt);
+    out =[]
+    for t_d=t;
+        out = [ out, sum( filterd_amp_l .* cos(2*pi*f*t_d + phi_l )) ];
+    end;
+end;
+
+
+[t, out] = getFilterdTimeDomainFromFindAandBsOnePeriode(f, filterd_amp_l, filterd_phi_l, 3,200);
+disp(out(20));
+
+figure(5);
+plot(t, out);
+ylim([-.2, A+.2])
