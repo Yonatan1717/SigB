@@ -18,7 +18,7 @@ s = A*sin(w*t);
 
 figure(1);
 subplot(2,1,1)
-plot(t, s);
+plot(t, s, "lineWidth", 1.3);
 
 xlabel("time [s]"); ylabel("Amplitude [V]");
 ttl = sprintf("Sinus bølge: A = %d [V], f = %d [kHz], dt = %g [us], fs = %g [kHz], dp = %d", A, f/1e3, dt*1e6, fs/1e3, length(t)); 
@@ -26,10 +26,10 @@ title(ttl);
 
 % b)
 subplot(2,1,2)
-plot(t*1e3, s);
+plot(t*1e3, s, "lineWidth", 1.3);
 
 xlabel("time [ms]"); ylabel("Amplitude [V]");
-ttl = sprintf("Sinus bølge (skalert): A = %d [V], f = %d [kHz], dt = %g [us], fs = %g [kHz], dp = %d", A, f/1e3, dt*1e6, fs/1e3, length(t)); 
+ttl = sprintf("Sinus bølge (skalert tidsakse): A = %d [V], f = %d [kHz], dt = %g [us], fs = %g [kHz], dp = %d", A, f/1e3, dt*1e6, fs/1e3, length(t)); 
 title(ttl);
 
 % c-f
@@ -43,9 +43,9 @@ for i = 1:length(dts); # loope gjennom alle seg lengder
     fs_i = 1/dt_i;
     t_i = t_start:dt_i:t_end; 
     s_i = A*sin(w*t_i);
-    spp_i = uint32(fs_i/f); # ca sample pr periode 
+    spp_i = fs_i/f; # sample pr periode
 
-    plot(t_i*1e3, s_i, colors(i), "DisplayName", sprintf("dt = %g us, fs = %g [kHz], spp = %d, dp = %d", dt_i*1e6, fs_i/1e3, spp_i, length(t_i)));
+    plot(t_i*1e3, s_i, colors(i), "lineWidth", 1.3, "DisplayName", sprintf("dt = %g us, fs = %g [kHz], spp = %d, dp = %d", dt_i*1e6, fs_i/1e3, spp_i, length(t_i)));
 end;
 
 ttl = sprintf("Sinus bølge varierende dt: A = %d [V], f = %d [kHz]", A, f/1e3); 
@@ -61,10 +61,10 @@ for i = 1:length(dts)
     fs_i = 1/dt_i;
     t_i = t_start:dt_i:t_end; 
     s_i = A*sin(w*t_i);
-    spp_i = uint32(fs_i/f); # ca sample pr periode
+    spp_i = fs_i/f; # sample pr periode
 
     subplot(2,2, i);
-    plot(t_i*1e3, s_i, colors(i));
+    plot(t_i*1e3, s_i, colors(i), "lineWidth", 1.3);
 
     xlabel("time [ms]"); ylabel("Amplitude [V]");
     ttl_i = sprintf("Sinus bølge: dt = %g [us], fs = %g [kHz], spp = %d, dp = %d", dt_i*1e6, fs_i/1e3, spp_i, length(t_i));
