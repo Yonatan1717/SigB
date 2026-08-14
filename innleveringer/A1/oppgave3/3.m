@@ -2,7 +2,7 @@
 % Oppgave 3
 %
 % Egne hjelpefunksjoner ligger i:
-%   ../nyttigeFunksjoner/
+%   ../../nyttigeFunksjoner/
 %
 % Bruk "help funksjonsnavn" for dokumentasjon, eksempel:
 %   help mySquareV1
