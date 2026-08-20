@@ -28,8 +28,7 @@ function [t, out] = mySquareV1(t, f0, d_c, bds=[-1,1], pds=0, cent=false)
 
     if pds != 0
         t_stop = T*pds;
-        idx = find(t >= t_stop, 1)-1;
-        t = t(1:idx);
+        t = t(t < t_stop);
     end
         
     d_c = d_c/100;
