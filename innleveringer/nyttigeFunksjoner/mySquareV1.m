@@ -35,7 +35,7 @@ function [t, out] = mySquareV1(t, f0, d_c, bds=[-1,1], pds=0, cent=false)
     rads = t*2*pi*f0;
 
     if cent
-        rads = t*2*pi*f0 + (2*pi*d_c)/2;
+        rads = rads + (2*pi*d_c)/2;
     end
 
     pulse_end_rad = 2*pi*d_c;
