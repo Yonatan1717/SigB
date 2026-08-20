@@ -11,7 +11,7 @@
 
 % Legg til funkjons mappa
 script_dir = fileparts(mfilename("fullpath"))
-addpath(fullfile(script_dir, "..", "..", "nyttigeFunksjoner"));
+addpath(genpath(fullfile(script_dir, "..", "..", "nyttigeFunksjoner")));
 
 pkg load signal;
 
