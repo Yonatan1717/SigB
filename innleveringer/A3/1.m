@@ -40,44 +40,6 @@ function out = pulseTrain(t, A, T, tau)
 end
 
 
-function [H, gain_l, phi_l, C] = rcLowPass(f, f_cut, R)
-    % Frekvensrespons for et førsteordens RC lavpassfilter.
-
-    C = 1/(2*pi*f_cut*R);
-
-    H = 1 ./ (1 + 1j*2*pi*f*R*C);
-
-    gain_l = abs(H);
-    phi_l = angle(H);
-end
-
-
-function [t, out] = getTimeDomainFromSpectrum(f, amp_l, phi_l, pds, dp)
-    % Rekonstruerer et reelt tidssignal fra amplitude, fase og frekvens.
-    % Bruker:
-    %   x(t) = sum(A_n*cos(2*pi*f_n*t + phi_n))
-
-    f_max = max(f);
-    f0 = f(2);
-    T = 1/f0;
-
-    dt = (pds*T)/dp;
-    fs = 1/dt;
-
-    % Sørg for tilstrekkelig samplingsfrekvens for høyeste komponent.
-    if (fs < 2.5*f_max)
-        fs = 2.5*f_max;
-        dt = 1/fs;
-    end
-
-    t = 0:dt:(pds*T - dt);
-    out = zeros(size(t));
-
-    for i = 1:length(t)
-        out(i) = sum(amp_l .* cos(2*pi*f*t(i) + phi_l));
-    end
-end
-
 %% Felles parametere
 
 A   = 2;                   % Amplitude [V]
@@ -89,7 +51,7 @@ dp = 1000;                 % Beregningspunkter per periode
 N  = 6;                    % Antall Fourier-komponenter
 
 
-% Signal-funksjon som brukes av Fourier-hjelpefunksjonene.
+% Signal-funksjon som brukes.
 func = @(t) pulseTrain(t, A, T, tau);
 
 %% Oppgave b) - Numeriske Fourier-koeffisienter
