@@ -1,0 +1,45 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{preamble}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+\AtBeginDocument{\RenewCommandCopy\qty\SI}
+% for H option in figures
+\usepackage{float}
+
+
+% ------ Metadata ------
+\newcommand{\institution}{FHS/Cyberingeniørskolen}
+\newcommand{\laboratory}{Signal Behandling}
+\newcommand{\coursecode}{ING3504}
+\newcommand{\assignmenttype}{Innlevering 1}
+\newcommand{\assignmenttitle}{Octave}
+\newcommand{\studentname}{Abay}
+\newcommand{\class}{VING 78}
+\newcommand{\submissiondate}{\today}
+
+\begin{document}
+
+\input{frontpage}
+
+\pagenumbering{Roman}
+\setcounter{page}{1}
+
+
+\section*{Oppgaveliste}
+\noindent
+\hyperlink{oppgave1}{\textbf{Oppgave 1}} \hfill \hyperlink{oppgave1}{1} \\[.5em]
+\hyperlink{Vedlegg A}{\textbf{Vedlegg A}} \hfill \hyperlink{Vedlegg A}{8} \\[.5em]
+\noindent\rule{\textwidth}{1pt}
+
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\input{sections/oppgave1}
+\clearpage
+
+\input{sections/vedleggA}
+\clearpage
+
+\end{document}
