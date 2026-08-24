@@ -26,7 +26,7 @@ pkg load communications;
 
 % Legg til mappa med egne hjelpefunksjoner.
 script_dir = fileparts(mfilename("fullpath"));
-addpath(genpath(fullfile(script_dir, "..", "nyttigeFunksjoner")));
+addpath(genpath(fullfile(script_dir, "..", "..", "nyttigeFunksjoner")));
 
 % Mappe for genererte plot.
 plot_dir = fullfile(script_dir, "plots");

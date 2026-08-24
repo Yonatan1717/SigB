@@ -174,9 +174,9 @@ $n$ & Frekvens [Hz] & $a_n$ [V] & Fase [deg] \\
 1 & 125 & 0.9003  & 0 \\
 2 & 250 & 0.6366  & 0 \\
 3 & 375 & 0.3001  & 0 \\
-4 & 500 & 0        & 0 \\
-5 & 625 & -0.1801 & -180 \\
-6 & 750 & -0.2122 & -180
+4 & 500 & 0       & 0 \\
+5 & 625 & 0.1801  & -180 \\
+6 & 750 & 0.2122  & -180
 \end{tabular}
 \end{center}
 Den fjerde harmoniske komponenten blir null. Dette stemmer også
@@ -219,7 +219,7 @@ Dette skyldes at signalet rekonstrueres med et begrenset antall
 frekvenskomponenter. Et ideelt sprang krever i prinsippet
 uendelig mange harmoniske komponenter. Amplitude- og fasespekteret for de seks første harmoniske
 komponentene er vist under.
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]
     {../Media/oppgave_c_fourier_spekter.png}
@@ -257,13 +257,16 @@ avstand mellom de harmoniske frekvenskomponentene.
 \end{figure}
 \noindent Ved hjelp av KVL kan responsen til dette systemet beskrives med en førsteordens differensialligning:
 \[
-    RC\frac{dv_o(t)}{dt}+v_o(t) = v_i(t)
+    RC\frac{dv_o(t)}{dt}+v_o(t) = v_i(t), \quad v_o(t) = v_c(t)
 \]
 bruker Laplace-transformasjonen og får overføringsfunksjonen:
 \[
     RC \cdot (sV_o(s) - v_o(0)) + V_o(s) = V_i(s)
 \]
 For overføringsfunksjonen antar vi at kondensatoren er utladet ved $t=0$, dvs. $v_o(0)=0$. Dette gir:
+\[
+    V_o(s) \cdot (sRC + 1) = V_i(s) \quad \Rightarrow 
+\]
 \[
     H(s) = \frac{V_o(s)}{V_i(s)} = \frac{1}{1 + sRC}
 \]
@@ -305,7 +308,7 @@ Ved knekkfrekvensen $500$ Hz er amplitudefaktoren:
 0.707,
 \]
 og faseforskyvningen er $-45^\circ$.
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]
     {../Media/oppgave_e_filterrespons.png}
@@ -319,7 +322,7 @@ amplituderespons,
 \[
 A_{n,\mathrm{ut}}
 =
-A_{n,\mathrm{inn}}
+A_{n,\mathrm{inn}} \cdot 
 |H(f_n)|,
 \]
 mens filterets faseforskyvning legges til signalets opprinnelige
@@ -343,14 +346,12 @@ y(t)
 a_0
 +
 \sum_{n=1}^{N}
-A_n|H(f_n)|
+A_{n,\mathrm{ut}} \cdot
 \cos
 \left(
 2\pi f_nt
 +
-\phi_n
-+
-\angle H(f_n)
+\phi_{n,\mathrm{ut}}
 \right)
 \]
 DC-komponenten påvirkes ikke av filteret siden:
@@ -360,21 +361,21 @@ H(0)=1
 De høyere frekvenskomponentene dempes mer enn de lave
 frekvenskomponentene. I tillegg får komponentene en
 frekvensavhengig faseforskyvning.
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]
     {../Media/oppgave_f_filtrert_spekter.png}
     \caption{Frekvenskomponentene etter RC-lavpassfilteret.}
 \end{figure}
-Det opprinnelige pulstoget, Fourier-serien før filteret og
+\noindent Det opprinnelige pulstoget, Fourier-serien før filteret og
 Fourier-serien etter filteret er vist i figuren under.
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]
     {../Media/oppgave_f_inn_og_utsignal.png}
     \caption{Sammenligning av pulstoget og Fourier-serien før og etter RC-filteret.}
 \end{figure}
-Det filtrerte signalet har betydelig rundere flanker enn
+\noindent Det filtrerte signalet har betydelig rundere flanker enn
 innsignalet. Dette skyldes at de høyfrekvente komponentene,
 som er nødvendige for å lage de raske overgangene i det
 rektangulære signalet, blir dempet av lavpassfilteret.
