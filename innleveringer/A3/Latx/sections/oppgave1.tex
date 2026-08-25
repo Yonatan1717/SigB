@@ -26,6 +26,7 @@ f_0 = \frac{1}{T}
 \]
 
 % --------------------------------------------------
+\hypertarget{a}{}
 \subsection*{a)}
 Pulstoget er sentrert omkring $t=0$ og kan innenfor en periode
 beskrives som:
@@ -155,6 +156,7 @@ x(t)
 \]
 
 % --------------------------------------------------
+\hypertarget{b}{}
 \subsection*{b)}
 De seks første harmoniske Fourier-koeffisientene beregnes numerisk
 i Octave. Egne hjelpefunksjoner brukes for å beregne DC-komponenten,
@@ -192,6 +194,7 @@ Et negativt Fourier-ledd kan alternativt beskrives med positiv
 amplitude og en faseforskyvning på $180^\circ$.
 
 % --------------------------------------------------
+\hypertarget{c}{}
 \subsection*{c)}
 Fourier-komponentene summeres for å rekonstruere signalet i
 tidsdomenet. I programmet gjøres dette ved hjelp av funksjonen
@@ -227,6 +230,7 @@ komponentene er vist under.
 \end{figure}
 
 % --------------------------------------------------
+\hypertarget{d}{}
 \subsection*{d)}
 Antall Fourier-komponenter har stor betydning for hvor godt
 Fourier-serien representerer det opprinnelige pulstoget.\\[1em]
@@ -248,10 +252,11 @@ En større periodetid gir derfor lavere grunnfrekvens og mindre
 avstand mellom de harmoniske frekvenskomponentene.
 
 % --------------------------------------------------
+\hypertarget{e}{}
 \subsection*{e)}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]
+    \includegraphics[width=0.75\textwidth]
     {../Media/RC.png}
     \caption{RC-lavpassfilter krets}
 \end{figure}
@@ -265,7 +270,7 @@ bruker Laplace-transformasjonen og får overføringsfunksjonen:
 \]
 For overføringsfunksjonen antar vi at kondensatoren er utladet ved $t=0$, dvs. $v_o(0)=0$. Dette gir:
 \[
-    V_o(s) \cdot (sRC + 1) = V_i(s) \quad \Rightarrow 
+    V_o(s) \cdot (1 + sRC) = V_i(s) \quad \Rightarrow 
 \]
 \[
     H(s) = \frac{V_o(s)}{V_i(s)} = \frac{1}{1 + sRC}
@@ -285,6 +290,8 @@ For å finne knekkfrekvensen setter vi $|H(j\omega)| = \frac{1}{\sqrt{2}}$ og f�
 \[
     \omega_c = \frac{1}{RC} \quad \Rightarrow \quad f_c = \frac{1}{2\pi RC}
 \]
+\clearpage
+\noindent
 Frekvensresponsen for de aktuelle Fourier-komponentene blir:
 \begin{center}
 \begin{tabular}{c|c|c}
@@ -315,6 +322,7 @@ og faseforskyvningen er $-45^\circ$.
     \caption{RC-filterets amplitude- og faserespons ved de aktuelle Fourier-frekvensene.}
 \end{figure}
 % --------------------------------------------------
+\hypertarget{f}{}
 \subsection*{f)}
 Hver Fourier-komponent påvirkes forskjellig av filteret.
 Amplituden til hver komponent multipliseres med filterets
@@ -334,7 +342,9 @@ fase,
 +
 \angle H(f_n)
 \]
-Dette gjøres i Octave med
+\clearpage
+\noindent
+Dette gjøres i Octave med:
 \begin{verbatim}
 filtered_amp_l = gain_l .* unfiltered_amp_l;
 filtered_phi_l = filter_phi_l + unfiltered_phi_l;
@@ -383,6 +393,7 @@ Faseforskyvningen bidrar også til at formen på utsignalet
 endres.
 
 % --------------------------------------------------
+\hypertarget{g}{}
 \subsection*{g)}
 Både knekkfrekvensen og antall Fourier-komponenter påvirker
 resultatet. En lav knekkfrekvens fører til at flere av de harmoniske
