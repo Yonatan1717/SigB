@@ -24,22 +24,21 @@ clc;
 pkg load signal;
 pkg load communications;
 
-% Legg til mappa med egne hjelpefunksjoner.
+% Legg til mappa med egne hjelpefunksjoner
 script_dir = fileparts(mfilename("fullpath"));
 addpath(genpath(fullfile(script_dir, "..", "..", "nyttigeFunksjoner")));
 
-% Mappe for genererte plot.
+% Mappe for genererte plot
 plot_dir = fullfile(script_dir, "plots");
 
 if !exist(plot_dir, "dir")
     mkdir(plot_dir);
 end
 
-
 % Lokale funksjoner
 function out = pulseTrain(t, A, T, tau)
 
-    % Genererer pulstoget som er gitt i oppgaven.
+    % Genererer pulstoget som er gitt i oppgaven
     f0 = 1/T;
     d_c = round((tau/T)*100);
 
