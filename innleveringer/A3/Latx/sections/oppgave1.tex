@@ -1,4 +1,9 @@
-\noindent \textbf{Lenke til all kode og alle plotter for innleveringen finnes i Vedlegg A.}
+\noindent \textbf{Lenke til all kode og alle plotter for innleveringen finnes i Vedlegg A.}\\[1em]
+Min besvarelse følger følgende mønster: 
+\[
+   \text{tidsdomenet } \rightarrow \text{ fourierrekke } \rightarrow \text{ filter } \rightarrow \text{ tidsdommenet}
+\]
+
 
 \hypertarget{oppgave1}{}
 \section*{Oppgave 1}
@@ -83,7 +88,7 @@ a_0
 \]
 Cosinuskoeffisientene beregnes som:
 \[
-a_n
+a_{n}
 =
 \frac{2}{T}
 \int_{-\tau/2}^{\tau/2}
@@ -170,13 +175,13 @@ amplitude og fase:
 Resultatet blir:
 \begin{center}
 \begin{tabular}{c|c|c|c}
-$n$ & Frekvens [Hz] & $a_n$ [V] & Fase [deg] \\
+$n$ & $f$ [Hz] & $|a_{n,\mathrm{in}}|$ [V] & $\phi_{n,\mathrm{in}}$ [deg] \\
 \hline
 0 & 0   & 0.5000  & 0 \\
 1 & 125 & 0.9003  & 0 \\
 2 & 250 & 0.6366  & 0 \\
 3 & 375 & 0.3001  & 0 \\
-4 & 500 & 0       & 0 \\
+4 & 500 & 0       & uDef \\
 5 & 625 & 0.1801  & -180 \\
 6 & 750 & 0.2122  & -180
 \end{tabular}
@@ -191,7 +196,7 @@ siden:
 \mathrm{sinc}(1)=0
 \]
 Et negativt Fourier-ledd kan alternativt beskrives med positiv
-amplitude og en faseforskyvning på $180^\circ$.
+amplitude og en faseforskyvning på $180^\circ$ (eller ekvivalent $-\!180^\circ$).
 
 % --------------------------------------------------
 \hypertarget{c}{}
@@ -295,7 +300,7 @@ For å finne knekkfrekvensen setter vi $|H(j\omega)| = \frac{1}{\sqrt{2}}$ og f�
 Frekvensresponsen for de aktuelle Fourier-komponentene blir:
 \begin{center}
 \begin{tabular}{c|c|c}
-Frekvens [Hz] & $|H(f)|$ & Fase [deg] \\
+$f$ [Hz] & $|H(f)|$ & $\angle H(f)$ [deg] \\
 \hline
 0   & 1.0000 & 0.00 \\
 125 & 0.9701 & -14.04 \\
@@ -328,9 +333,9 @@ Hver Fourier-komponent påvirkes forskjellig av filteret.
 Amplituden til hver komponent multipliseres med filterets
 amplituderespons,
 \[
-A_{n,\mathrm{ut}}
+|a_{n,\mathrm{ut}}|
 =
-A_{n,\mathrm{inn}} \cdot 
+|a_{n,\mathrm{inn}}| \cdot 
 |H(f_n)|,
 \]
 mens filterets faseforskyvning legges til signalets opprinnelige
@@ -356,7 +361,7 @@ y(t)
 a_0
 +
 \sum_{n=1}^{N}
-A_{n,\mathrm{ut}} \cdot
+|a_{n,\mathrm{ut}}| \cdot
 \cos
 \left(
 2\pi f_nt
@@ -364,6 +369,28 @@ A_{n,\mathrm{ut}} \cdot
 \phi_{n,\mathrm{ut}}
 \right)
 \]
+Tabellen under viser filtrerte Fourier-koeffisienter etter filteret:
+% Frekvens [Hz] | Amplitude [V] | Fase [deg] | k <= 10
+%           0     0.5000          0
+%    125.0000     0.8734   -14.0362
+%    250.0000     0.5694   -26.5651
+%    375.0000     0.2401   -36.8699
+%    500.0000     0.0000   -45.0000
+%    625.0000     0.1125  -231.3402
+%    750.0000     0.1177  -236.3099
+\begin{center}
+\begin{tabular}{c|c|c|c}
+$n$ & $f$ [Hz] & $|a_{n, \mathrm{ut}}|$ [V] & $\phi_{n, \mathrm{ut}}$ [deg] \\
+\hline
+0 & 0   & 0.5000  & 0 \\
+1 & 125 & 0.8734  & -14.0362 \\
+2 & 250 & 0.5694  & -26.5651 \\
+3 & 375 & 0.2401  & -36.8699 \\
+4 & 500 & 0       &  uDef \\
+5 & 625 & 0.1125  & -231.3402 \\
+6 & 750 & 0.1177  & -236.3099
+\end{tabular}
+\end{center} 
 DC-komponenten påvirkes ikke av filteret siden:
 \[
 H(0)=1
@@ -373,7 +400,7 @@ frekvenskomponentene. I tillegg får komponentene en
 frekvensavhengig faseforskyvning.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth]
+    \includegraphics[width=0.75\textwidth]
     {../Media/oppgave_f_filtrert_spekter.png}
     \caption{Frekvenskomponentene etter RC-lavpassfilteret.}
 \end{figure}
@@ -403,8 +430,8 @@ Når knekkfrekvensen økes, slipper flere av de harmoniske
 komponentene gjennom filteret. Utsignalet blir da mer likt
 det opprinnelige rektangulære pulstoget og får brattere
 flanker.\\[1em]
-Antallet Fourier-komponenter $N$ bestemmer samtidig hvor stor
-båndbredde som finnes i signalet før filtrering. Et større $N$
+Antallet Fourier-komponenter $N$ bestemmer samtidig
+båndbredde til Fourier-serietilnærmingen til signalet før filtrering. Et større $N$
 gir en bedre representasjon av det opprinnelige pulstoget.\\[1em]
 Dersom $N$ økes mens knekkfrekvensen holdes lav, vil de nye
 høyfrekvente komponentene i stor grad bli fjernet av filteret.

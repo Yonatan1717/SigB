@@ -331,3 +331,13 @@ legend();
 grid on;
 
 print(fullfile(plot_dir, "oppgave_f_inn_og_utsignal.png"), "-dpng", "-r300");
+
+% Etter filteret
+disp("=== Fourier-koeffisienter etter filteret ===");
+disp("Frekvens [Hz] | Amplitude [V] | Fase [deg] | k <= 10");
+
+if length(f_l) > 10
+    disp([f_l(1:10)', filtered_amp_l(1-:10)', radToDeg(filtered_phi_l(1:10))']);
+else
+    disp([f_l', filtered_amp_l', radToDeg(filtered_phi_l)']);
+end
