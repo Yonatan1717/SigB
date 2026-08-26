@@ -55,7 +55,13 @@ a_0
 a_n\cos(n\omega_0t)
 +
 b_n\sin(n\omega_0t)
-\right]
+\right] \quad \Rightarrow
+\]
+\[
+    x(t) = a_0 + \sum_{n=1}^{\infty} A_n \cos(n\omega_0 t + \phi_n)
+\]
+\[
+    A_n = \sqrt{a_n^2 + b_n^2}, \quad \phi_n = \arctan\frac{-b_n}{a_n}
 \]
 Siden signalet er symmetrisk omkring $t=0$, er det et jevnt signal.
 Sinuskoeffisientene blir derfor:
@@ -171,12 +177,13 @@ amplitude og fase:
 [dc, t_sq, sq] = findA0(func, T, dp);
 
 [amp_l, phi_l, freq_l, a_l, b_l, amp_mm, phi_mm] = ...
-    findAnandBns(func, T, N, dp);
+    findAnandBns(func, T, N, dp); 
+    % amp_l innholder liste med A_n
 \end{verbatim}
 Resultatet blir:
 \begin{center}
 \begin{tabular}{c|c|c|c}
-$n$ & $f$ [Hz] & $|a_{n,\mathrm{in}}|$ [V] & $\phi_{n,\mathrm{in}}$ [deg] \\
+$n$ & $f$ [Hz] & $A_{n,\mathrm{in}}$ [V] & $\phi_{n,\mathrm{in}}$ [deg] \\
 \hline
 0 & 0   & 0.5000  & 0 \\
 1 & 125 & 0.9003  & 0 \\
@@ -334,9 +341,9 @@ Hver Fourier-komponent påvirkes forskjellig av filteret.
 Amplituden til hver komponent multipliseres med filterets
 amplituderespons,
 \[
-|a_{n,\mathrm{ut}}|
+A_{n,\mathrm{ut}}
 =
-|a_{n,\mathrm{inn}}| \cdot 
+A_{n,\mathrm{inn}} \cdot 
 |H(f_n)|,
 \]
 mens filterets faseforskyvning legges til signalets opprinnelige
@@ -362,7 +369,7 @@ y(t)
 a_0
 +
 \sum_{n=1}^{N}
-|a_{n,\mathrm{ut}}| \cdot
+A_{n,\mathrm{ut}} \cdot
 \cos
 \left(
 2\pi f_nt
@@ -381,7 +388,7 @@ Tabellen under viser filtrerte Fourier-koeffisienter etter filteret:
 %    750.0000     0.1177  -236.3099
 \begin{center}
 \begin{tabular}{c|c|c|c}
-$n$ & $f$ [Hz] & $|a_{n, \mathrm{ut}}|$ [V] & $\phi_{n, \mathrm{ut}}$ [deg] \\
+$n$ & $f$ [Hz] & $A_{n, \mathrm{ut}}$ [V] & $\phi_{n, \mathrm{ut}}$ [deg] \\
 \hline
 0 & 0   & 0.5000  & 0 \\
 1 & 125 & 0.8734  & -14.0362 \\
