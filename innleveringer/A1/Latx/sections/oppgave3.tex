@@ -1,0 +1,104 @@
+\hypertarget{oppgave3}{}
+\section*{Oppgave 3}
+\addcontentsline{toc}{section}{Oppgave 3}
+
+I denne oppgaven genereres firkantpulser og bitsekvenser i Octave.
+For å gjøre dette er det laget egne funksjoner for generering av
+signalene. Selve implementasjonen av funksjonene er lagt i
+vedlegg A, mens denne delen viser hvordan funksjonene brukes og
+resultatene de gir.
+\begin{verbatim}
+pkg load signal; # for å bruke square() funksjonen
+\end{verbatim}
+
+% --------------------------------------------------
+\subsection*{a)}
+
+For generering av firkantpulsen er funksjonen
+\texttt{mySquareV1} laget. Funksjonen bruker signalets fase i
+radianer og modulo $2\pi$ for å bestemme hvor i perioden hvert
+sample befinner seg. \\[1em]
+Det er også laget en alternativ funksjon, \texttt{mySquareV2},
+som utfører tilsvarende generering direkte i tidsdomenet.
+Implementasjonen av begge funksjonene finnes i vedlegg A.\\[1em]
+Det brukes en fundamental frekvens på 10 kHz og 100 samples
+per periode:
+\begin{verbatim}
+f0 = 10e3;
+T = 1/f0;
+fs = f0*100;
+
+t_start = 0;
+dt = 1/fs;
+t_end = T*4-dt;
+
+d_c = 50; # %
+d_c2 = 20; # %
+
+t = t_start:dt:t_end;
+\end{verbatim}
+Periodetiden er:
+\[
+    T = \frac{1}{f_0} = \frac{1}{10kHz} = 0.1\,\text{ms}
+\]
+Med 100 samples per periode blir samplingsfrekvensen:
+\[
+    f_s = 100f_0 = 1\,\text{MHz}
+\]
+Den egenlagde funksjonen brukes først til å generere en puls med
+50 \% duty cycle. Deretter genereres en sentrert puls med
+20 \% duty cycle:
+\begin{verbatim}
+[_, out_m] = mySquareV1(t, f0, d_c);
+[_, out_m2] = mySquareV1(t, f0, d_c2, [0,1], 0, true);
+\end{verbatim}
+For å kontrollere resultatet sammenlignes signalene med Octaves
+innebygde \texttt{square()}-funksjon:
+\begin{verbatim}
+out = square(t*2*pi*f0, d_c);
+
+t_1 = T*(d_c2/100)/2;
+
+out2 = square((t+t_1)*2*pi*f0, d_c2);
+out2 = (out2 + 1)/2;
+\end{verbatim}
+Figuren viser at den egenlagde funksjonen gir samme firkantpulser
+som \texttt{square()}-funksjonen.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{oppgave3a.png}
+    \caption{Sammenligning mellom den egenlagde
+    \texttt{mySquareV1}-funksjonen og \texttt{square()} i Octave.}
+\end{figure}
+
+% --------------------------------------------------
+\subsection*{b)}
+For å generere en bitsekvens er funksjonen
+\texttt{bitWaveGen} laget. Funksjonen mottar en bitvektor,
+bittid, antall samples per bit og et eventuelt shift. Funksjonen bruker også hjelpefunksjonen
+\texttt{addZerosOrOnes}. Implementasjonen av begge funksjonene finnes i vedlegg A.
+Bitsekvensen som skal genereres er:
+\[
+[1,\ 0,\ 1,\ 0].
+\]
+Bittiden settes til 1 ms, med 100 samples per bit og et shift på 50 \%:
+\begin{verbatim}
+bits = [1,0,1,0];
+T = 1e-3; # s
+spp = 100; # sample per periode
+sh = 50; # %
+
+[t, out] = bitWaveGen(bits, T, spp, sh);
+\end{verbatim}
+Samplingsintervallet blir:
+\[
+dt = \frac{T}{100}
+   = 10\,\mu\text{s}.
+\]
+Figuren under viser den resulterende bitsekvensen.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{oppgave3b.png}
+    \caption{Generert bitsekvens $[1,0,1,0]$ med
+    100 samples per bit og 50 \% shift.}
+\end{figure}

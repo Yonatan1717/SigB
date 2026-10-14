@@ -1,0 +1,73 @@
+\noindent \textbf{Lenke til all kode og alle plotter for innleveringen finnes i Vedlegg B.}
+
+\hypertarget{oppgave1}{}
+\section*{Oppgave 1}
+\addcontentsline{toc}{section}{Oppgave 1}
+
+% --------------------------------------------------
+\subsection*{a)}
+Det opprettes en radvektor med partall fra 2 til 20. 
+Kolonoperatoren brukes med en steglengde på 2.
+\begin{verbatim}
+lv_a = 2:2:20;
+\end{verbatim}
+Dette gir radvektoren
+\[
+lv_a =
+\begin{bmatrix}
+2 & 4 & 6 & 8 & 10 & 12 & 14 & 16 & 18 & 20
+\end{bmatrix}
+\]
+% --------------------------------------------------
+
+\subsection*{b)}
+Det opprettes en radvektor hvor tallene fra 1 til 10 opphøyes
+i tredje potens ved hjelp av \texttt{power()}:
+\begin{verbatim}
+lv_b = power(1:10, 3); # eller lv_b = (1:10).^3;
+\end{verbatim}
+Dette gir radvektoren:
+\[
+lv_b =
+\begin{bmatrix}
+1 & 8 & 27 & 64 & 125 & 216 & 343 & 512 & 729 & 1000
+\end{bmatrix}
+\]
+
+% --------------------------------------------------
+\subsection*{c)}
+Det opprettes en vektor hvor tallene fra 1 til 10 opphøyes
+i andre potens. Apostrofen på slutten transponerer resultatet
+fra en radvektor til en kolonnevektor:
+\begin{verbatim}
+kv_c = power((1:10), 2)';
+\end{verbatim}
+Dette gir kolonnevektoren:
+\[
+kv_c =
+\begin{bmatrix}
+1 \\
+4 \\
+9 \\
+16 \\
+25 \\
+36 \\
+49 \\
+64 \\
+81 \\
+100
+\end{bmatrix}
+\]
+% --------------------------------------------------
+\subsection*{d)}
+Her hentes annenhver verdi fra \texttt{kv\_c}, med start på
+element nummer 2. Resultatet transponeres deretter til en radvektor:
+\begin{verbatim}
+lv_d = kv_c(2:2:end)';
+\end{verbatim}
+Dette gir radvektoren: 
+\[
+    lv_d = \begin{bmatrix}
+            4 & 16 & 36 & 64 & 100
+        \end{bmatrix}
+\]

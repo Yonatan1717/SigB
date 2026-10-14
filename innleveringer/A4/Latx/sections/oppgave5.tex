@@ -1,0 +1,232 @@
+% ============================================================
+% Oppgave 5
+% ============================================================
+\hypertarget{oppgave5}{}
+\section*{Oppgave 5}
+\addcontentsline{toc}{section}{Oppgave 5}
+Datasekvensen er:
+\[
+x[n]
+=
+\{10,14,2,6,8,20,1,17,14,7,15,16\}
+\]
+\subsection*{a)}
+Filteret skal beregne middelverdien av tre etterfølgende
+ingangsverdier.
+Den ikke-rekursive løsningen blir derfor:
+\[
+\boxed{
+y[n]
+=
+\frac{x[n]+x[n-1]+x[n-2]}{3}
+}
+\]
+To tidligere inngangsverdier må lagres. Verdier før starten av
+sekvensen settes lik null.
+Den rekursive løsningen kan finnes ved å skrive:
+\[
+y[n-1]
+=
+\frac{x[n-1]+x[n-2]+x[n-3]}{3}
+\]
+Differansen mellom $y[n]$ og $y[n-1]$ blir:
+\[
+y[n]-y[n-1]
+=
+\frac{x[n]-x[n-3]}{3}
+\]
+Dermed får vi:
+\[
+\boxed{
+y[n]
+=
+y[n-1]
++
+\frac{x[n]-x[n-3]}{3}
+}
+\]
+Den ikke-rekursive og den rekursive løsningen gir samme
+matematiske resultat når beregningene utføres med uendelig
+presisjon.
+For den oppgitte sekvensen, med tre nuller før starten og to nuller
+etter slutten, blir utsignalene:
+\[
+\begin{aligned}
+y[n]=\{&
+0,\,
+0,\,
+0,\,
+3.3333,\,
+8.0000,\,
+8.6667,\,
+7.3333,\,
+5.3333,\,
+11.3333,\,
+9.6667,\,
+12.6667,\\
+&
+10.6667,\,
+12.6667,\,
+12.0000,\,
+12.6667,\,
+10.3333,\,
+5.3333
+\}
+\end{aligned}
+\]
+og den tilsvarende rekursive løsningen er:
+\[
+\begin{aligned}
+yr[n]=\{&
+0,\,
+0,\,
+0,\,
+3.3333,\,
+8.0000,\,
+8.6667,\,
+7.3333,\,
+5.3333,\,
+11.3333,\,
+9.6667,\,
+12.6667,\\
+&
+10.6667,\,
+12.6667,\,
+12.0000,\,
+12.6667,\,
+10.3333,\,
+5.3333
+\}
+\end{aligned}
+\]
+Differansen mellom de to utgangene er:
+\[
+\begin{aligned}
+d[n]=y[n]-yr[n]=\{&
+0,\,
+0,\,
+0,\,
+0,\,
+0,\,
+0,\,
+0,\,
+0,\,
+1.7764\times 10^{-15},\,
+0,\,
+0,\,
+0,\,
+0,\\
+&
+0,\,
+0,\,
+0,\,
+1.7764\times 10^{-15},\,
+8.8818\times 10^{-16}
+\}
+\end{aligned}
+\]
+Maksimal absolutt differanse er:
+\[
+\max |d[n]| = 1.7764\times 10^{-15}
+\]
+Octave-koden for de to løsningene er:
+\begin{verbatim}
+xx = [10,14,2,6,8,20,1,17,14,7,15,16];
+x = [zeros(1,3), xx, zeros(1,2)];
+y = zeros(size(x));
+for n = 3:length(x)
+    y(n) = (x(n)+x(n-1)+x(n-2))/3;
+end
+yr = zeros(size(x));
+for n = 4:length(x)
+    yr(n) = yr(n-1) + (x(n)-x(n-3))/3;
+end
+d = y - yr;
+maxAbsDiff = max(abs(d));
+\end{verbatim}
+\subsection*{b)}
+Tallet:
+\[
+\frac{1}{3}
+=
+0.3333\ldots
+\]
+kan ikke representeres eksakt med et endelig antall binære
+desimaler.
+De oppgitte tilnærmingene er:
+\[
+\begin{array}{c|c|c}
+\text{Binære desimaler} &
+\text{Tilnærming} &
+\text{Feil fra }1/3 \\
+\hline
+3 & 0.375000 & +0.041667 \\
+4 & 0.312500 & -0.020833 \\
+5 & 0.343750 & +0.010417 \\
+6 & 0.328125 & -0.005208
+\end{array}
+\]
+Feilen blir mindre når antall tilgjengelige binære desimaler
+øker.
+For hver verdi av $c$ testes tre realiseringer:
+\[
+\begin{aligned}
+y_{\mathrm{sum}}[n]&=c(x[n]+x[n-1]+x[n-2]),\\
+y_{\mathrm{prod}}[n]&=cx[n]+cx[n-1]+cx[n-2],\\
+y_r[n]&=y_r[n-1]+c(x[n]-x[n-3]).
+\end{aligned}
+\]
+Følgende Octave-kode utfører testen. Referansen \texttt{ref} bruker
+den eksakte verdien $1/3$ med Octaves flyttallspresisjon:
+\begin{verbatim}
+cs = [0.375, 0.3125, 0.34375, 0.328125];
+ref = zeros(size(x));
+for n = 3:length(x)
+    ref(n) = (x(n)+x(n-1)+x(n-2))/3;
+end
+for q = 1:length(cs)
+    c = cs(q);
+    ysum = zeros(size(x));
+    yprod = zeros(size(x));
+    yr = zeros(size(x));
+    for n = 3:length(x)
+        ysum(n) = c*(x(n)+x(n-1)+x(n-2));
+        yprod(n) = c*x(n)+c*x(n-1)+c*x(n-2);
+    end
+    for n = 4:length(x)
+        yr(n) = yr(n-1)+c*(x(n)-x(n-3));
+    end
+    printf("c = %.6f: %.12g %.12g %.12g %.12g\n", c, ...
+        max(abs(ysum-ref)), max(abs(yr-ref)), ...
+        max(abs(ysum-yr)), max(abs(ysum-yprod)));
+end
+\end{verbatim}
+Resultatene, der hver verdi er største absolutte avvik i hele
+utgangssekvensen, blir:
+\[
+\begin{array}{c|c|c|c}
+\text{Binære desimaler} & c &
+\max|y_{\mathrm{sum}}-\mathrm{ref}| &
+\max|y_r-\mathrm{ref}| \\
+\hline
+3 & 0.375000 & 1.583333 & 1.583333 \\
+4 & 0.312500 & 0.791667 & 0.791667 \\
+5 & 0.343750 & 0.395833 & 0.395833 \\
+6 & 0.328125 & 0.197917 & 0.197917
+\end{array}
+\]
+For alle fire verdiene av $c$ får vi dessuten:
+\[
+\max|y_{\mathrm{sum}}-y_r|=0
+\qquad \text{og} \qquad
+\max|y_{\mathrm{sum}}-y_{\mathrm{prod}}|=0.
+\]
+Feilen mot referansen halveres for hver ekstra binære desimal. I
+denne testen er de tre realiseringene like, fordi de oppgitte
+verdiene av $c$ kan representeres eksakt binært, inngangsverdiene
+er heltall, og Octave bruker høy presisjon i mellomregningene.
+En virkelig prosessor med begrenset antall bits kan i tillegg runde
+av hver mellomregning. Da kan den rekursive strukturen videreføre
+avrundingsfeil, mens $y_{\mathrm{prod}}$ kan få flere
+avrundingsfeil enn $y_{\mathrm{sum}}$ fordi den utfører tre
+multiplikasjoner i stedet for en.

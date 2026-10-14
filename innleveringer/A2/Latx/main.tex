@@ -1,0 +1,39 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{preamble}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+\AtBeginDocument{\RenewCommandCopy\qty\SI}
+% for H option in figures
+\usepackage{float}
+
+
+% ------ Metadata ------
+\newcommand{\institution}{FHS/Cyberingeniørskolen}
+\newcommand{\laboratory}{Signal Behandling}
+\newcommand{\coursecode}{ING3504}
+\newcommand{\assignmenttype}{Innlevering 1}
+\newcommand{\assignmenttitle}{Octave}
+\newcommand{\studentname}{Abay}
+\newcommand{\class}{VING 78}
+\newcommand{\submissiondate}{\today}
+
+\begin{document}
+
+\pagenumbering{Roman}
+\setcounter{page}{1}
+
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\input{sections/oppgave1}
+\clearpage
+
+\input{sections/oppgave2}
+\clearpage
+
+\input{sections/oppgave3}
+\clearpage
+
+\end{document}

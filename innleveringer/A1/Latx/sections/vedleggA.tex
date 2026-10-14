@@ -1,0 +1,151 @@
+\hypertarget{Vedlegg A}{}
+\section*{Vedlegg A}
+\addcontentsline{toc}{section}{Vedlegg A}
+\appendix
+
+Dette vedlegget inneholder implementasjonen av de egenlagde
+funksjonene som brukes i Oppgave 3.
+
+% --------------------------------------------------
+\subsection*{mySquareV1}
+
+\begin{verbatim}
+function [t, out] = mySquareV1(t, f0, d_c, ...
+                               bds=[-1,1], pds=0, cent=false);
+    #{
+        Denne funksjonen genererer firkantpulsen ved å uttrykke
+        signalets fase i radianer og bruke modulo 2*pi.
+
+        t: tidsvektor
+        f0: fundamental frekvens
+        d_c: duty cycle
+        bds:  grenser -> bds(1) = lav verdi, bds(2) = høy verdi.
+        pds: antall perioder man ønsker: pds <= antall perioder det er i t
+        cent: få en sentrert positiv puls omkring origo
+
+        return verdier
+        t:  pds=0 -> t_ut = t_in ellers er den tilpaset. [ms]
+        out: resulterde verdier for y aksen (amplitude vektor).
+    #}
+
+    T = 1/f0;
+
+    if pds != 0;
+        t_stop = T*pds;
+        idx = find(t >= t_stop, 1)-1;
+        t = t(1:idx);
+    end;
+
+    d_c = d_c/100; # konverter til desimal
+    rads = t*2*pi*f0; # konverter til radianer
+
+    if cent;
+        rads = t*2*pi*f0 + (2*pi*d_c)/2;
+    end;
+
+    pulse_end_rad = 2*pi*d_c; # når pulsen skal gå lavt igjen
+    n_rad = mod(rads, 2*pi); # normaliser radianer til 0-2pi
+
+    out = n_rad; 
+    out(n_rad >= pulse_end_rad) = bds(1);
+    out(n_rad < pulse_end_rad) = bds(2);
+
+    t = t*1e3; # skaler til ms
+end;
+\end{verbatim}
+
+
+% --------------------------------------------------
+\subsection*{mySquareV2}
+
+\begin{verbatim}
+function [t, out] = mySquareV2(f0, d_c, spp, ...
+                               bds=[-1,1], pds=5, sh=0);
+    #{
+        Denne funksjonen genererer firkantpulsen direkte i
+        tidsdomenet ved å bruke modulo av periodetiden T.
+
+        f0: fundamental frekvens
+        d_c: duty cycle
+        spp: samples per periode
+        bds: grenser -> bds(1) = lav verdi, bds(2) = høy verdi.
+        pds: antall perioder man ønsker
+        shfit: sh i tid gitt i prosent -> t + T*(sh/100)
+
+        return verdier
+        t: resulterdne tidsavektor skalert til ms,
+        out: resulterde verdier for y aksen (amplitude vektor).
+    #}
+
+    d_c = d_c/100; # konverter til desimal
+    T = 1/f0; 
+    dt = T/spp;
+    pulse_end_time = T*d_c; # når pulsen skal gå lavt igjen i tid 
+
+    t = 0:dt:(T*pds-dt);
+    t_mod = mod(t + T*(sh/100), T); # normaliser (t + t_shift) til 0-T 
+
+    out = t_mod;
+    out(t_mod < pulse_end_time) = bds(2);
+    out(t_mod >= pulse_end_time) = bds(1);
+
+    t = t*1e3; # skaler til ms
+end;
+\end{verbatim}
+
+% --------------------------------------------------
+\subsection*{addZerosOrOnes}
+
+\begin{verbatim}
+function y = addZerosOrOnes(x, num);
+    if x == 0;
+        y = zeros(1, num);
+    else
+        y = ones(1, num);
+    end;
+end;
+\end{verbatim}
+
+
+% --------------------------------------------------
+\subsection*{bitWaveGen}
+
+\begin{verbatim}
+function [t, out] = bitWaveGen(bits, T, spp, sh=0)
+    #{
+        bits: vektor med bits (1 og 0) som skal generere en puls
+        T: bit tid (periode) i sekunder
+        spp: samples per periode
+        shift: sh i tid gitt i prosent -> t + T*(sh/100)
+
+        return verdier
+        t: resulterende tidsvektor skalert til ms,
+        out: resulterende verdier for y aksen (amplitude vektor).
+    #}
+
+    dt = T/spp;
+    pds = length(bits); # antall perioder
+    sh_num = round(spp*(sh/100)); # antall som skal shiftes
+
+    t = 0:dt:(T*pds-dt);
+    out = [];
+
+    first = bits(1); # bit som skal shiftes først
+
+    for i=1:pds;
+
+        if i == 1;
+            out = [out, ...
+                   addZerosOrOnes(bits(i), spp-sh_num)];
+        else
+            out = [out, ...
+                   addZerosOrOnes(bits(i), spp)];
+        end;
+    end;
+
+    # legg til shift rest på første bit tilbake i vektoren
+    out = [out, addZerosOrOnes(first, sh_num)]; 
+
+    t = t*1e3; # skaler til ms
+end;
+\end{verbatim}

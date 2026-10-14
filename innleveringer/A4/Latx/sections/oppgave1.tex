@@ -1,0 +1,104 @@
+
+% ============================================================
+% Oppgave 1
+% ============================================================
+\hypertarget{oppgave1}{}
+\section*{Oppgave 1}
+\addcontentsline{toc}{section}{Oppgave 1}
+Vi skal vise at konvolusjon er distributiv, altså at:
+\[
+x_1[n]*(x_2[n]+x_3[n])
+=
+x_1[n]*x_2[n]+x_1[n]*x_3[n]
+\]
+De tre sekvensene er:
+\[
+x_1[n]=\{4,-1,5\}
+\]
+\[
+x_2[n]=\{6,-1,-1\}
+\]
+\[
+x_3[n]=\{-4,3,2\}
+\]
+Først summeres $x_2[n]$ og $x_3[n]$:
+\[
+x_2[n]+x_3[n]
+=
+\{2,2,1\}
+\]
+Konvolusjonen blir dermed:
+\[
+x_1[n]*(x_2[n]+x_3[n])
+=
+\{4,-1,5\}*\{2,2,1\}
+\]
+Ved å utføre konvolusjonen får vi:
+\[
+\{8,6,12,9,5\}
+\]
+Vi beregner deretter konvolusjonene separat:
+\[
+x_1[n]*x_2[n]
+=
+\{24,-10,27,-4,-5\}
+\]
+og
+\[
+x_1[n]*x_3[n]
+=
+\{-16,16,-15,13,10\}
+\]
+Summen av disse blir:
+\[
+\{24,-10,27,-4,-5\}
++
+\{-16,16,-15,13,10\}
+=
+\{8,6,12,9,5\}
+\]
+Begge metodene gir dermed samme resultat:
+\[
+\boxed{
+x_1*(x_2+x_3)
+=
+x_1*x_2+x_1*x_3
+}
+\]
+Konvolusjon er derfor distributiv.
+\subsection*{Kontroll med lengre sekvenser}
+Det samme testes med sekvensene:
+\[
+x_1[n]=\{4,-1,0,5\}
+\]
+\[
+x_2[n]=\{6,-1,7,-1,1\}
+\]
+\[
+x_3[n]=\{-4,3,2,1\}
+\]
+Siden $x_2$ og $x_3$ må ha samme lengde før de summeres, legges
+det til en null bakerst i $x_3$:
+\[
+x_3[n]=\{-4,3,2,1,0\}
+\]
+I Octave beregnes dette som:
+\begin{verbatim}
+x1 = [4,-1,0,5];
+x2 = [6,-1,7,-1,1];
+x3 = [-4,3,2,1,0];
+
+y1 = conv(x1, x2 + x3);
+y2 = conv(x1,x2) + conv(x1,x3);
+\end{verbatim}
+Begge beregningene gir:
+\[
+y_1[n]
+=
+y_2[n]
+=
+\{8,6,34,1,14,44,0,5\}
+\]
+Dette viser at den distributive egenskapen også gjelder for de
+lengre sekvensene.
+

@@ -1,0 +1,98 @@
+
+% ============================================================
+% Oppgave 2
+% ============================================================
+
+\hypertarget{oppgave2}{}
+\section*{Oppgave 2}
+\addcontentsline{toc}{section}{Oppgave 2}
+Det analoge signalet er gitt som:
+\[
+x(t)=2\cos(2\pi100t)
+\]
+og samplingsfrekvensen er:
+\[
+f_s=800~\mathrm{Hz}
+\]
+Samplingsperioden blir:
+\[
+T_s
+=
+\frac{1}{f_s}
+=
+\frac{1}{800}
+\]
+Et sample tas ved:
+\[
+t=nT_s
+\]
+Dette settes inn i uttrykket for det analoge signalet:
+\[
+x[n]
+=
+2\cos(2\pi100nT_s)
+\]
+Siden:
+\[
+T_s=\frac{1}{800}
+\]
+får vi:
+\[
+x[n]
+=
+2\cos
+\left(
+2\pi\frac{100}{800}n
+\right)
+\]
+som kan forenkles til:
+\[
+\boxed{
+x[n]
+=
+2\cos\left(\frac{\pi}{4}n\right)
+}
+\]
+Den digitale vinkelfrekvensen er dermed:
+\[
+\hat{\omega}
+=
+\frac{\pi}{4}
+\]
+Antall samples per periode kan finnes fra:
+\[
+N
+=
+\frac{f_s}{f}
+=
+\frac{800}{100}
+=
+8
+\]
+Den digitale periodelengden er derfor:
+\[
+\boxed{N=8}
+\]
+For en periode, $n=0,\ldots,7$, får vi:
+\[
+\begin{array}{c|c}
+n & x[n] \\
+\hline
+0 & 2 \\
+1 & \sqrt{2} \\
+2 & 0 \\
+3 & -\sqrt{2} \\
+4 & -2 \\
+5 & -\sqrt{2} \\
+6 & 0 \\
+7 & \sqrt{2}
+\end{array}
+\]
+Sekvensen for en periode blir dermed:
+\[
+\boxed{
+x[n]
+=
+\{2,\sqrt{2},0,-\sqrt{2},-2,-\sqrt{2},0,\sqrt{2}\}
+}
+\]
