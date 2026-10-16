@@ -1,0 +1,99 @@
+\oppgave{9}
+Systemets bitrate og bitenergiforhold er:
+\[
+    R_b=48\enhet{kbps}=48000\enhet{bps},\qquad
+    \left(\frac{E_b}{N_0}\right)_{\mathrm{dB}}=7.5\enhet{dB}
+\]
+Vi bruker ideell Nyquist-båndbredde for binær overføring i basisbånd.
+
+BER-uttrykkene forutsetter like sannsynlige bit, additiv hvit Gauss-støy og optimal deteksjon uten intersymbolinterferens.
+
+\subsection*{a)}
+Sammenhengen mellom signal-støyforhold og bitenergiforhold er:
+\[
+    \frac{S}{N}=\frac{E_b}{N_0}\frac{R_b}{B}
+\]
+Ved minste båndbredde for binær basisbåndsoverføring gjelder:
+\[
+    B_{\min}=\frac{R_b}{2},\qquad\frac{R_b}{B_{\min}}=2
+\]
+I dB kan sammenhengen skrives som:
+\[
+    \left(\frac{S}{N}\right)_{\mathrm{dB}}
+       =\left(\frac{E_b}{N_0}\right)_{\mathrm{dB}}
+        +10\log_{10}\!\left(\frac{R_b}{B}\right)
+\]
+Med minste båndbredde får vi:
+\[
+    \left(\frac{S}{N}\right)_{\mathrm{dB}}
+       =7.5+10\log_{10}(2)
+       =7.5+3.010\approx10.510\enhet{dB}
+\]
+Signal-støyforholdet er derfor:
+\[
+    \boxed{\left(\frac{S}{N}\right)_{\mathrm{dB}}\approx10.510\enhet{dB}}
+\]
+
+\subsection*{b)}
+Den minste teoretiske båndbredden finnes fra Nyquist-grensen:
+\[
+    B_{\min}=\frac{R_b}{2}=\frac{48000}{2}=24000\enhet{Hz}
+\]
+Svaret blir:
+\[
+    \boxed{B_{\min}=24\enhet{kHz}}
+\]
+
+\newpage
+\subsection*{c)}
+For unipolar NRZ med nivåene $0$ og $A$ brukes gjennomsnittlig energi per bit. Bitfeilsannsynligheten ved optimal terskel er:
+\[
+    P_{b,\mathrm{uni}}=Q\!\left(\sqrt{\frac{E_b}{N_0}}\right)
+\]
+Det oppgitte bitenergiforholdet omregnes til lineær verdi:
+\[
+    \frac{E_b}{N_0}=10^{7.5/10}\approx5.623
+\]
+Vi setter inn verdien og beregner argumentet til $Q$-funksjonen:
+\[
+    P_{b,\mathrm{uni}}=Q(\sqrt{5.623})=Q(2.371)
+\]
+Den numeriske verdien kan beregnes med feilfunksjonen:
+\[
+    P_{b,\mathrm{uni}}=\frac{1}{2}\operatorname{erfc}\!\left(
+        \frac{2.371}{\sqrt{2}}\right)
+        \approx8.861\cdot10^{-3}
+\]
+Bitfeilsannsynligheten for unipolar NRZ er dermed:
+\[
+    \boxed{\mathrm{BER}_{\mathrm{uni}}\approx8.861\cdot10^{-3}
+    \approx0.886\%}
+\]
+Hvis feilhyppigheten uttrykkes som forventet antall bitfeil per sekund, blir den:
+\[
+    R_bP_{b,\mathrm{uni}}
+       =48000\cdot8.861\cdot10^{-3}
+       \approx425.330\enhet{beps}
+\]
+
+\subsection*{d)}
+For bipolar NRZ med nivåene $-A$ og $+A$, brukes:
+\[
+    P_{b,\mathrm{bi}}=Q\!\left(\sqrt{\frac{2E_b}{N_0}}\right)
+\]
+Vi setter inn det samme bitenergiforholdet som i c):
+\[
+    P_{b,\mathrm{bi}}=Q(\sqrt{2\cdot5.623})
+                     =Q(3.354)
+\]
+Den numeriske bitfeilsannsynligheten blir:
+\[
+    \boxed{\mathrm{BER}_{\mathrm{bi}}\approx3.988\cdot10^{-4}
+    \approx0.040\%}
+\]
+Dette tilsvarer følgende forventede antall bitfeil per sekund:
+\[
+    48000\cdot3.988\cdot10^{-4}
+                        \approx19.142\enhet{beps}
+\]
+Vi får lavere BER ved samme gjennomsnittlige bitenergi, fordi de to signaltilstandene ligger lenger fra hverandre.

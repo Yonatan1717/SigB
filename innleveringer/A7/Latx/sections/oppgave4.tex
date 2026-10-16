@@ -1,0 +1,30 @@
+\oppgave{4}
+Den ønskede dataraten og signal-støyforholdet er:
+\[
+    R_b=56\enhet{kbps}=56000\enhet{bps},
+    \qquad \mathrm{SNR}_{\mathrm{dB}}=-7\enhet{dB}
+\]
+Først omregnes signal-støyforholdet til lineær verdi:
+\[
+    \frac{S}{N}=10^{-7/10}\approx0.200
+\]
+Shannon--Hartleys formel gir den teoretiske kapasiteten:
+\[
+    C=B\log_2\!\left(1+\frac{S}{N}\right)
+\]
+For å kunne overføre datastrømmen må kapasiteten være minst lik dataraten:
+\[
+    B\log_2(1+10^{-7/10})\geq56000
+\]
+Vi løser med hensyn på båndbredden:
+\[
+    B\geq\frac{56000}{\log_2(1+10^{-7/10})}
+\]
+Dette gir minste teoretiske båndbredde ved det oppgitte signal-støyforholdet:
+\[
+    B_{\min}\approx213362.020\enhet{Hz}
+\]
+Svaret blir derfor:
+\[
+    \boxed{B_{\min}\approx213.362\enhet{kHz}}
+\]

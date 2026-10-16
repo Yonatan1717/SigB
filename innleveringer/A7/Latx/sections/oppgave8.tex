@@ -1,0 +1,81 @@
+\oppgave{8}
+Vi tolker bipolar NRZ i oppgaven som antipodal, binær signalering med to motsatte spenningsnivåer, altså $-A$ og $+A$. Vi antar like sannsynlige bit, additiv hvit Gauss-støy og optimal deteksjon uten intersymbolinterferens. Bitfeilsannsynligheten er da:
+\[
+    \mathrm{BER}=P_b=Q\!\left(\sqrt{\frac{2E_b}{N_0}}\right)
+\]
+$Q$-funksjonen gir sannsynligheten for at en standard normalfordelt variabel er større enn argumentet.
+
+\subsection*{a)}
+Kravet til bitfeilsannsynlighet er:
+\[
+    Q\!\left(\sqrt{\frac{2E_b}{N_0}}\right)\leq10^{-6}
+\]
+Siden $Q(x)$ er avtakende, finner vi minste nødvendige bitenergiforhold ved å sette BER lik grenseverdien:
+\[
+    \sqrt{\frac{2E_b}{N_0}}=Q^{-1}(10^{-6})
+\]
+Verdien av $Q^{-1}(10^{-6})$ må finnes fra en normalfordelingstabell eller en numerisk funksjon. Den inverse funksjonen finner argumentet som gir den ønskede halesannsynligheten, og er ikke det samme som $1/Q$.
+
+En beregning uten ekstra Matlab/Octave-toolbox bruker sammenhengen med den komplementære feilfunksjonen og dens inverse:
+\begin{align*}
+    Q(x)&=\frac{1}{2}\operatorname{erfc}\!\left(\frac{x}{\sqrt{2}}\right)\\
+    Q^{-1}(p)&=\sqrt{2}\operatorname{erfc}^{-1}(2p)
+\end{align*}
+For det oppgitte BER-kravet blir beregningen:
+\[
+    Q^{-1}(10^{-6})=\sqrt{2}\operatorname{erfc}^{-1}(2\cdot10^{-6})
+                  \approx4.753
+\]
+Den samme tallverdien beregnes i Matlab/Octave med:
+\begin{verbatim}
+x = sqrt(2)*erfcinv(2*1e-6);
+\end{verbatim}
+Vi kvadrerer og deler på 2 for å finne den lineære verdien:
+\[
+    \left(\frac{E_b}{N_0}\right)_{\min}
+       =\frac{(4.753)^2}{2}\approx11.298
+\]
+Dette omregnes til dB:
+\[
+    \left(\frac{E_b}{N_0}\right)_{\min,\mathrm{dB}}
+       =10\log_{10}(11.298)\approx10.530\enhet{dB}
+\]
+Minste verdi som oppfyller BER-kravet er derfor:
+\[
+    \boxed{\left(\frac{E_b}{N_0}\right)_{\min}\approx11.298,
+    \quad\left(\frac{E_b}{N_0}\right)_{\min,\mathrm{dB}}\approx10.530\enhet{dB}}
+\]
+
+\newpage
+\subsection*{b)}
+Det oppgitte bitenergiforholdet er:
+\[
+    \left(\frac{E_b}{N_0}\right)_{\mathrm{dB}}=11\enhet{dB}
+\]
+Først omregnes det til lineær verdi:
+\[
+    \frac{E_b}{N_0}=10^{11/10}\approx12.589
+\]
+Dette settes inn i BER-uttrykket for antipodal NRZ:
+\[
+    P_b=Q\!\left(\sqrt{2\cdot12.589}\right)
+\]
+Argumentet til $Q$-funksjonen blir:
+\[
+    x=\sqrt{25.178}\approx5.018
+\]
+Ved å bruke den komplementære feilfunksjonen får vi:
+\[
+    P_b=\frac{1}{2}\operatorname{erfc}\!\left(    \frac{5.018}{\sqrt{2}}\right)
+       \approx2.613\cdot10^{-7}
+\]
+Dette kan beregnes direkte i Matlab/Octave med:
+\begin{verbatim}
+Y = 10^(11/10);
+BER = 0.5*erfc(sqrt(Y));
+\end{verbatim}
+Den forventede bitfeilsannsynligheten er dermed:
+\[
+    \boxed{\mathrm{BER}\approx2.613\cdot10^{-7}}
+\]
+Dette er lavere enn $10^{-6}$, i samsvar med at $11\enhet{dB}$ er høyere enn den nødvendige minsteverdien fra a).

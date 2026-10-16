@@ -1,0 +1,39 @@
+\oppgave{1}
+Datasekvensen og bittiden er gitt som:
+\[
+    [0,1,0,1,1,0,1,0,1,0],\qquad T_b=62\enhet{\mu s}
+\]
+Bitraten finnes ved å ta den inverse av bittiden:
+\[
+    R_b=\frac{1}{T_b}=\frac{1}{62\cdot10^{-6}}
+       \approx16129.032\enhet{bit/s}
+\]
+Ved NRZ beholder signalet samme nivå gjennom hele bittiden. Det raskest skiftende mønsteret er vekslende nuller og enere. En hel periode består da av to bit, og periodelengden blir:
+\[
+    T=2T_b=2\cdot62\enhet{\mu s}=124\enhet{\mu s}
+\]
+Grunnfrekvensen til dette mønsteret er:
+\[
+    f=\frac{1}{2T_b}=\frac{R_b}{2}
+      \approx8064.516\enhet{Hz}
+\]
+Den minste teoretiske båndbredden for binær basisbåndsoverføring følger også fra Nyquist-grensen:
+\[
+    R_b\leq2B
+\]
+Dermed blir minste nødvendige kanalbåndbredde:
+\[
+    B_{\min}=\frac{R_b}{2}
+            =\frac{16129.032}{2}
+            \approx8064.516\enhet{Hz}
+\]
+Svaret, med den ideelle Nyquist-modellen for minste båndbredde, er:
+\[
+    \boxed{B_{\min}\approx8.065\enhet{kHz}}
+\]
+
+En ideell rektangulær NRZ-puls har et spektrum som strekker seg til uendelig frekvens. Den første spektralnullen ligger ved:
+\[
+    f_{\mathrm{null},1}=\frac{1}{T_b}=R_b\approx16.129\enhet{kHz}
+\]
+Dette er båndbredden fra null frekvens til første spektralnull. Svaret over gjelder den \emph{minste teoretiske kanalbåndbredden}, med ideell pulsforming og sampling uten intersymbolinterferens.

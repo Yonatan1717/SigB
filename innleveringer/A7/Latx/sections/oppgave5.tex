@@ -1,0 +1,47 @@
+\oppgave{5}
+Systemets båndbreddeeffektivitet er:
+\[
+    Y=\frac{C}{B}=3.75\enhet{bps/Hz}
+\]
+Ved Shannon-grensen er forholdet mellom effektiviteten og SNR gitt ved:
+\[
+    Y=\log_2\!\left(1+\frac{S}{N}\right)
+\]
+Vi opphøyer begge sider med grunntall 2:
+\[
+    2^Y=1+\frac{S}{N}
+\]
+Dermed er minste lineære signal-støyforhold:
+\[
+    \left(\frac{S}{N}\right)_{\min}=2^{3.75}-1
+                                \approx12.454
+\]
+Dette omregnes til dB:
+\[
+    \mathrm{SNR}_{\min,\mathrm{dB}}
+       =10\log_{10}(12.454)\approx10.953\enhet{dB}
+\]
+Minste nødvendige SNR er derfor:
+\[
+    \boxed{\mathrm{SNR}_{\min,\mathrm{dB}}\approx10.953\enhet{dB}}
+\]
+Sammenhengen med bitenergi relativt til støytetthet er:
+\[
+    \frac{S}{N}=\frac{E_b}{N_0}\frac{C}{B}
+\]
+Vi løser med hensyn på bitenergiforholdet og setter inn verdiene:
+\[
+    \frac{E_b}{N_0}=\frac{S/N}{C/B}
+                  =\frac{12.454}{3.75}
+                  \approx3.321
+\]
+Tilsvarende verdi i dB blir:
+\[
+    \left(\frac{E_b}{N_0}\right)_{\mathrm{dB}}
+       =10\log_{10}(3.321)\approx5.213\enhet{dB}
+\]
+Vi har dermed:
+\[
+    \boxed{\frac{E_b}{N_0}\approx3.321,
+    \qquad \left(\frac{E_b}{N_0}\right)_{\mathrm{dB}}\approx5.213\enhet{dB}}
+\]

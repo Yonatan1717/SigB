@@ -1,0 +1,41 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\IfFileExists{norsk.ldf}{\usepackage[norsk]{babel}}{}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{parskip}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\renewcommand{\figurename}{Figur}
+\pagestyle{plain}
+\newcommand{\enhet}[1]{\,\mathrm{#1}}
+% Samme plassering av hovedoverskrift som i A4- og A6-malen.
+\newcommand{\oppgave}[1]{%
+    \setlength{\topskip}{15.4pt}%
+    \section*{Oppgave #1}%
+    \setlength{\topskip}{12pt}%
+    \vspace{1.363pt}%
+}
+\begin{document}
+\input{sections/oppgave1}
+\clearpage
+\input{sections/oppgave2}
+\clearpage
+\input{sections/oppgave3}
+\clearpage
+\input{sections/oppgave4}
+\clearpage
+\input{sections/oppgave5}
+\clearpage
+\input{sections/oppgave6}
+\clearpage
+\input{sections/oppgave7}
+\clearpage
+\input{sections/oppgave8}
+\clearpage
+\input{sections/oppgave9}
+\end{document}

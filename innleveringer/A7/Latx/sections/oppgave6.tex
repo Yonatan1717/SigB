@@ -1,0 +1,31 @@
+\oppgave{6}
+Den binære basisbåndsoverføringen har kanalbåndbredde og roll-off-faktor:
+\[
+    B=35\enhet{kHz}=35000\enhet{Hz},\qquad\alpha=0.65
+\]
+Et Raised Cosine-filter har følgende sammenheng mellom den ensidige basisbåndbredden og symbolraten:
+\[
+    B=\frac{1+\alpha}{2}R_s
+\]
+Ved binær overføring er det en bit per symbol, slik at:
+\[
+    R_b=R_s
+\]
+Vi kan derfor skrive båndbreddekravet som:
+\[
+    B=\frac{1+\alpha}{2}R_b
+\]
+Vi løser med hensyn på bitraten:
+\[
+    R_b=\frac{2B}{1+\alpha}
+\]
+De oppgitte verdiene settes inn:
+\[
+    R_b=\frac{2\cdot35000}{1+0.65}
+       =\frac{70000}{1.65}
+       \approx42424.242\enhet{bps}
+\]
+Den forventede kapasiteten ut fra båndbredde og pulsforming er dermed:
+\[
+    \boxed{R_b\approx42.424\enhet{kbps}}
+\]

@@ -1,0 +1,82 @@
+\oppgave{2}
+Telefonkanalen har båndbredde og signal-støyforhold:
+\[
+    B=3.1\enhet{kHz}=3100\enhet{Hz},
+    \qquad \mathrm{SNR}_{\mathrm{dB}}=36\enhet{dB}
+\]
+
+\subsection*{a)}
+Først omregnes signal-støyforholdet til et lineært effektforhold:
+\[
+    \frac{S}{N}=10^{36/10}\approx3981.072
+\]
+Den teoretiske kanalkapasiteten finnes fra Shannon--Hartleys formel:
+\[
+    C=B\log_2\!\left(1+\frac{S}{N}\right)
+\]
+Vi setter inn kanaldataene:
+\[
+    C=3100\log_2(1+3981.072)
+      \approx37073.841\enhet{bps}
+\]
+Den teoretisk største dataraten er dermed:
+\[
+    \boxed{C\approx37.074\enhet{kbps}}
+\]
+
+For å finne antallet symboltilstander sammenliknes dette med Nyquists uttrykk for $M$ tilstander ved maksimal symbolrate:
+\[
+    C=2B\log_2(M)
+\]
+Antallet bit per symbol ved den teoretiske grensen blir:
+\[
+    \log_2(M)=\frac{C}{2B}
+             =\frac{37073.841}{2\cdot3100}
+             \approx5.980
+\]
+Det formelle antallet symboltilstander blir derfor:
+\[
+    M=\sqrt{1+10^{36/10}}\approx63.104
+\]
+Resultatet av sammenlikningen er:
+\[
+    \boxed{M_{\mathrm{teor}}\approx63.104}
+\]
+Dette er en teoretisk referanseverdi, siden antallet tilstander må være et heltall. Avrundet opp kreves 64 tilstander for minst denne mengden informasjon per symbol (overskrider den teoretiske grensen).
+
+\newpage
+\subsection*{b)}
+Vi bruker oppgavens modell med maksimal symbolrate og et fast, helt antall bit per symbol. Maksimal symbolrate er:
+\[
+    R_s=2B=2\cdot3100=6200\enhet{symbol/s}
+\]
+For $k$ bit per symbol er dataraten:
+\[
+    R_b=R_s k=2Bk
+\]
+Vi må velge det største heltallet $k$ som ikke gir en datarate over Shannon-grensen:
+\[
+    k\leq\frac{C}{2B}\approx5.980
+\]
+Dermed blir antallet bit per symbol:
+\[
+    k=\left\lfloor\frac{C}{2B}\right\rfloor=5
+\]
+Dette tilsvarer følgende antall symboltilstander:
+\[
+    M=2^k=2^5=32
+\]
+Dataraten i denne modellen blir:
+\[
+    R_b=6200\cdot5=31000\enhet{bps}
+\]
+Svaret for heltallskravet ved maksimal symbolrate er:
+\[
+    \boxed{R_b=31\enhet{kbps},\qquad k=5,\qquad M=32}
+\]
+Som kontroll ville seks bit per symbol ved samme symbolrate gitt:
+\[
+    R_b=6200\cdot6=37200\enhet{bps}
+       >37073.841\enhet{bps}
+\]
+Dette overskrider Shannon-grensen og kan derfor ikke regnes som feilfri overføring med de oppgitte kanaldataene.

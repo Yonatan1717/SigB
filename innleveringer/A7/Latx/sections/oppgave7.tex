@@ -1,0 +1,45 @@
+\oppgave{7}
+Den opprinnelige bitraten og de to roll-off-faktorene er:
+\[
+    R_{b,1}=6400\enhet{bps},\qquad
+    \alpha_1=0.55,\qquad\alpha_2=0.15
+\]
+Vi antar at kanalbåndbredden beholdes. Båndbredden for den opprinnelige binære overføringen er:
+\[
+    B=\frac{1+\alpha_1}{2}R_{b,1}
+\]
+Vi setter inn verdiene:
+\[
+    B=\frac{1+0.55}{2}\cdot6400=4960\enhet{Hz}
+\]
+Når roll-off-faktoren reduseres, kan bitraten økes innenfor samme båndbredde:
+\[
+    R_{b,2}=\frac{2B}{1+\alpha_2}
+\]
+Den nye bitraten blir:
+\[
+    R_{b,2}=\frac{2\cdot4960}{1+0.15}
+           \approx8626.087\enhet{bps}
+\]
+Vi kunne også funnet dette direkte fra forholdet mellom roll-off-faktorene:
+\[
+    R_{b,2}=R_{b,1}\frac{1+\alpha_1}{1+\alpha_2}
+           =6400\frac{1.55}{1.15}
+           \approx8626.087\enhet{bps}
+\]
+Økningen i bitrate er:
+\[
+    \Delta R_b=8626.087-6400\approx2226.087\enhet{bps}
+\]
+Den prosentvise økningen blir:
+\[
+    \frac{R_{b,2}-R_{b,1}}{R_{b,1}}\cdot100\%
+       =\frac{2226.087}{6400}\cdot100\%
+       \approx34.783\%
+\]
+Informasjonen kan dermed sendes med:
+\[
+    \boxed{R_{b,2}\approx8.626\enhet{kbps},
+    \quad\text{en økning på }34.783\%}
+\]
+En lavere roll-off-faktor gir mindre overskuddsbåndbredde, men stiller samtidig strengere krav til pulsforming og tidsstyring i mottakeren (mindre robust mot jitter).
